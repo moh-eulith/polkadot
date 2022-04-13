@@ -246,11 +246,8 @@ impl Initialized {
 					},
 				};
 
-			if !overlay_db.is_empty() {
-				let _write_timer = self.metrics.time_db_write_operation();
-				let ops = overlay_db.into_write_ops();
-				backend.write(ops)?;
-			}
+			overlay_db.flush();
+
 			// even if the changeset was empty,
 			// otherwise the caller will error.
 			confirm_write()?;
