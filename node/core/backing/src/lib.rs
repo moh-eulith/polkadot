@@ -145,7 +145,7 @@ impl ValidatedCandidateCommand {
 }
 
 /// Holds all data needed for candidate backing job operation.
-pub struct CandidateBackingJob<Sender> {
+pub struct CandidateBackingJob<Sender: Send> {
 	/// The hash of the relay parent on top of which this job is doing it's work.
 	parent: Hash,
 	/// The session index this corresponds to.
@@ -734,7 +734,8 @@ where
 		statement: Statement,
 		root_span: &jaeger::Span,
 	) -> Result<Option<SignedFullStatement>, Error> {
-		if let Some(signed_statement) = self.sign_statement(statement).await {
+		let x = self.sign_statement(statement);
+		if let Some(signed_statement) = x.await {
 			self.import_statement(sender, &signed_statement, root_span).await?;
 			let smsg = StatementDistributionMessage::Share(self.parent, signed_statement.clone());
 			sender.send_unbounded_message(smsg);
@@ -1168,7 +1169,7 @@ where
 
 impl<Sender> util::JobTrait for CandidateBackingJob<Sender>
 where
-	Sender: overseer::CandidateBackingSenderTrait + Unpin + Send,
+	Sender: overseer::CandidateBackingSenderTrait + Unpin + Send + Sync,
 {
 	type ToJob = CandidateBackingMessage;
 	type OutgoingMessages = overseer::CandidateBackingOutgoingMessages;
@@ -1317,7 +1318,7 @@ where
 }
 
 /// The candidate backing subsystem.
-pub type CandidateBackingSubsystem<Spawner, Sender: overseer::CandidateBackingSenderTrait> =
+pub type CandidateBackingSubsystem<Spawner, Sender> =
 	polkadot_node_subsystem_util::JobSubsystem<
 		CandidateBackingJob<Sender>,
 		Spawner,
