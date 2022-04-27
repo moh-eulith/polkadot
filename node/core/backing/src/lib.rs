@@ -1160,7 +1160,7 @@ impl CandidateBackingJob {
 	}
 }
 
-impl util::JobTrait for CandidateBackingJob {
+impl<Sender> util::JobTrait for CandidateBackingJob<Sender> {
 	type ToJob = CandidateBackingMessage;
 	type Error = Error;
 	type RunArgs = SyncCryptoStorePtr;
