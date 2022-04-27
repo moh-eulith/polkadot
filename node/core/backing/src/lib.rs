@@ -1168,7 +1168,7 @@ where
 
 impl<Sender> util::JobTrait for CandidateBackingJob<Sender>
 where
-	Sender: overseer::CandidateBackingSenderTrait + Unpin,
+	Sender: overseer::CandidateBackingSenderTrait + Unpin + Send,
 {
 	type ToJob = CandidateBackingMessage;
 	type OutgoingMessages = overseer::CandidateBackingOutgoingMessages;
