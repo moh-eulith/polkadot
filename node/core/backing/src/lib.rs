@@ -51,8 +51,9 @@ use polkadot_subsystem::{
 		DisputeCoordinatorMessage, ProvisionableData, ProvisionerMessage, RuntimeApiRequest,
 		StatementDistributionMessage, ValidationFailed,
 	},
+	overseer,
 	overseer::SubsystemSender,
-	overseer, ActivatedLeaf, PerLeafSpan, Stage,
+	ActivatedLeaf, PerLeafSpan, Stage,
 };
 use sp_keystore::SyncCryptoStorePtr;
 use statement_table::{
@@ -1319,7 +1320,4 @@ where
 
 /// The candidate backing subsystem.
 pub type CandidateBackingSubsystem<Spawner, Sender> =
-	polkadot_node_subsystem_util::JobSubsystem<
-		CandidateBackingJob<Sender>,
-		Spawner,
-	>;
+	polkadot_node_subsystem_util::JobSubsystem<CandidateBackingJob<Sender>, Spawner>;
