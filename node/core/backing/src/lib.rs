@@ -46,10 +46,10 @@ use polkadot_primitives::v2::{
 use polkadot_subsystem::{
 	jaeger,
 	messages::{
-		AvailabilityDistributionMessage, AvailabilityStoreMessage,
-		CandidateBackingMessage, CandidateValidationMessage, CollatorProtocolMessage,
-		DisputeCoordinatorMessage, ProvisionableData, ProvisionerMessage, RuntimeApiRequest,
-		StatementDistributionMessage, ValidationFailed,
+		AvailabilityDistributionMessage, AvailabilityStoreMessage, CandidateBackingMessage,
+		CandidateValidationMessage, CollatorProtocolMessage, DisputeCoordinatorMessage,
+		ProvisionableData, ProvisionerMessage, RuntimeApiRequest, StatementDistributionMessage,
+		ValidationFailed,
 	},
 	overseer,
 	overseer::SubsystemSender,
