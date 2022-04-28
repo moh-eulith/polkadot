@@ -799,6 +799,8 @@ impl Default for State {
 impl<Context> Subsystem<Context, SubsystemError> for AvailabilityRecoverySubsystem
 where
 	Context: overseer::AvailabilityRecoveryContextTrait,
+	<Context as overseer::AvailabilityRecoveryContextTrait>::Sender:
+		overseer::AvailabilityRecoverySenderTrait,
 {
 	fn start(self, ctx: Context) -> SpawnedSubsystem {
 		let future = self
@@ -839,6 +841,8 @@ async fn launch_recovery_task<Context>(
 ) -> error::Result<()>
 where
 	Context: overseer::AvailabilityRecoveryContextTrait,
+	<Context as overseer::AvailabilityRecoveryContextTrait>::Sender:
+		overseer::AvailabilityRecoverySenderTrait,
 {
 	let candidate_hash = receipt.hash();
 
@@ -891,6 +895,8 @@ async fn handle_recover<Context>(
 ) -> error::Result<()>
 where
 	Context: overseer::AvailabilityRecoveryContextTrait,
+	<Context as overseer::AvailabilityRecoveryContextTrait>::Sender:
+		overseer::AvailabilityRecoverySenderTrait,
 {
 	let candidate_hash = receipt.hash();
 
@@ -953,6 +959,8 @@ async fn query_full_data<Context>(
 ) -> error::Result<Option<AvailableData>>
 where
 	Context: overseer::AvailabilityRecoveryContextTrait,
+	<Context as overseer::AvailabilityRecoveryContextTrait>::Sender:
+		overseer::AvailabilityRecoverySenderTrait,
 {
 	let (tx, rx) = oneshot::channel();
 	ctx.send_message(AvailabilityStoreMessage::QueryAvailableData(candidate_hash, tx))
@@ -982,6 +990,8 @@ impl AvailabilityRecoverySubsystem {
 	async fn run<Context>(self, mut ctx: Context) -> SubsystemResult<()>
 	where
 		Context: overseer::AvailabilityRecoveryContextTrait,
+		<Context as overseer::AvailabilityRecoveryContextTrait>::Sender:
+			overseer::AvailabilityRecoverySenderTrait,
 	{
 		let mut state = State::default();
 		let Self { fast_path, mut req_receiver, metrics } = self;

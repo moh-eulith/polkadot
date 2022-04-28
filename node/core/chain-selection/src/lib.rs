@@ -321,6 +321,7 @@ impl ChainSelectionSubsystem {
 impl<Context> overseer::Subsystem<Context, SubsystemError> for ChainSelectionSubsystem
 where
 	Context: overseer::ChainSelectionContextTrait,
+	<Context as overseer::ChainSelectionContextTrait>::Sender: overseer::ChainSelectionSenderTrait,
 {
 	fn start(self, ctx: Context) -> SpawnedSubsystem {
 		let backend = crate::db_backend::v1::DbBackend::new(
@@ -344,6 +345,7 @@ async fn run<Context, B>(
 	clock: Box<dyn Clock + Send + Sync>,
 ) where
 	Context: overseer::ChainSelectionContextTrait,
+	<Context as overseer::ChainSelectionContextTrait>::Sender: overseer::ChainSelectionSenderTrait,
 	B: Backend,
 {
 	loop {
@@ -375,6 +377,7 @@ async fn run_until_error<Context, B>(
 ) -> Result<(), Error>
 where
 	Context: overseer::ChainSelectionContextTrait,
+	<Context as overseer::ChainSelectionContextTrait>::Sender: overseer::ChainSelectionSenderTrait,
 	B: Backend,
 {
 	let mut stagnant_check_stream = stagnant_check_interval.timeout_stream();
