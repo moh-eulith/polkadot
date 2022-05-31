@@ -295,7 +295,7 @@ impl pallet_preimage::Config for Runtime {
 parameter_types! {
 	pub EpochDuration: u64 = prod_or_fast!(
 		EPOCH_DURATION_IN_SLOTS as u64,
-		2 * MINUTES as u64,
+		4 as u64,
 		"DOT_EPOCH_DURATION"
 	);
 	pub const ExpectedBlockTime: Moment = MILLISECS_PER_BLOCK;
@@ -573,18 +573,18 @@ parameter_types! {
 	// Six sessions in an era (24 hours).
 	pub SessionsPerEra: SessionIndex = prod_or_fast!(
 		6,
-		6,
+		2,
 		"DOT_SESSIONS_PER_ERA"
 	);
 	// 28 eras for unbonding (28 days).
 	pub BondingDuration: sp_staking::EraIndex = prod_or_fast!(
 		28,
-		28,
+		1,
 		"DOT_BONDING_DURATION"
 	);
 	pub SlashDeferDuration: sp_staking::EraIndex = prod_or_fast!(
 		27,
-		27,
+		1,
 		"DOT_SLASH_DEFER_DURATION"
 	);
 	pub const RewardCurve: &'static PiecewiseLinear<'static> = &REWARD_CURVE;
